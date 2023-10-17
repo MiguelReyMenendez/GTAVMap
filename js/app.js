@@ -304,7 +304,7 @@ $(function() {
 				
 					// Agrega un formulario simple dentro del infoWindow
 					infoWindow.setOptions({
-						content:'<form id="addATMForm"><label for="type">Tipo:</label><select id="type" name="type" required><option value="ATMs">ATMs</option><option value="Spots vehiculos">Spots vehiculos</option></select><br><label for="title">Title:</label><input type="text" id="title" name="title" required><br><label for="notes">Notes:</label><input type="text" id="notes" name="notes" required><br><button type="button" onclick="submitATMForm('+ evt.latLng.lat().toFixed(3)+', '+ evt.latLng.lng().toFixed(3)+')">Add ATM</button></form>'
+						content:'<form id="addATMForm"><label for="type">Tipo:</label><select id="type" name="type" required><option value="ATMs">ATMs</option><option value="Spots vehiculos">Spots vehiculos</option></select><br><label for="title">Title:</label><input type="text" id="title" name="title" required><br><label for="notes">Notes:</label><input type="text" id="notes" name="notes" required><br><button type="button" onclick="submitATMForm('+ evt.latLng.lat().toFixed(3)+', '+ evt.latLng.lng().toFixed(3)+')">Añadir punto</button></form>'
 					});
 					   // Open the info window
 					   infoWindow.open(map, markerobject);
@@ -606,13 +606,8 @@ function submitATMForm(lat, long) {
 		}
 	})
 	.then(response => response.json())
-	.then(data => {
-		console.log(data.message);
-		// Limpia el formulario si la operación fue exitosa
-		infoWindow.close(); // Cierra el infoWindow después de agregar el ATM
-	})
 	.catch(error => {
-		console.error("Error al agregar datos:", error);
+		location.reload();
 	});
 } 
 
