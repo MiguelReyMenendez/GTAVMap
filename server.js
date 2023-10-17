@@ -9,8 +9,8 @@ const port = 3000;
 // Configura middleware para analizar solicitudes JSON
 app.use(bodyParser.json());
 
-// Configura Express para servir archivos estáticos desde la carpeta 'js'
-app.use(express.static(path.join(__dirname, 'js')));
+// Configura Express para servir archivos estáticos desde la carpeta 'public'
+app.use(express.static(path.join(__dirname, 'public')));
 
 // Ruta para servir el archivo index.html para cualquier ruta
 app.get('*', (req, res) => {
