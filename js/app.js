@@ -303,11 +303,11 @@ $(function() {
 				        content: '<p>' + 'Current Lat: ' + evt.latLng.lat().toFixed(3) + '<br>' + 'Current Lng: ' + evt.latLng.lng().toFixed(3) + '<br>' + 'Zoom Level: ' + map.getZoom() + '</p>'
 				    });
 					console.log(evt.latLng.lat().toFixed(3));
-			/* 		latInput.value = evt.latLng.lat().toFixed(3);
-					lngInput.value = evt.latLng.lng().toFixed(3); */
-		
-					// Show the form
-					atmForm.style.display = "block";
+					console.log("latInput:", latInput);  // Agrega este log
+					console.log("lngInput:", lngInput);  // Agrega este log
+				
+					latInput.value = evt.latLng.lat().toFixed(3);
+					lngInput.value = evt.latLng.lng().toFixed(3);
 
 				    // Open the info window
 				    //infoWindow.open(map, markerobject);
