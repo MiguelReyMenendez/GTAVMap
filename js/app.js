@@ -304,7 +304,7 @@ $(function() {
 				
 					// Agrega un formulario simple dentro del infoWindow
 					infoWindow.setOptions({
-						content:'<form id="addATMForm"><label for="type">Tipo:</label><select id="type" name="type" required><option value="ATMs">ATMs</option><option value="Spots vehiculos">Spots vehiculos</option></select><br><label for="title">Title:</label><input type="text" id="title" name="title" required><br><label for="notes">Notes:</label><input type="text" id="notes" name="notes" required><br><button type="button" onclick="submitATMForm()">Add ATM</button></form>'
+						content:'<form id="addATMForm"><label for="type">Tipo:</label><select id="type" name="type" required><option value="ATMs">ATMs</option><option value="Spots vehiculos">Spots vehiculos</option></select><br><label for="title">Title:</label><input type="text" id="title" name="title" required><br><label for="notes">Notes:</label><input type="text" id="notes" name="notes" required><br><button type="button" onclick="submitATMForm('+ evt.latLng.lat().toFixed(3)+', '+ evt.latLng.lng().toFixed(3)+')">Add ATM</button></form>'
 					});
 					   // Open the info window
 					   infoWindow.open(map, markerobject);
@@ -582,7 +582,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
  */
-function submitATMForm() {
+function submitATMForm(lat, long) {
 	const type = document.getElementById("type").value;
 	const title = document.getElementById("title").value;
 	const notes = document.getElementById("notes").value;
@@ -598,8 +598,8 @@ function submitATMForm() {
 			timestamp: new Date().toISOString(),
 			title: title,
 			notes: notes,
-			lat: evt.latLng.lat().toFixed(3),
-			lng: evt.latLng.lng().toFixed(3)
+			lat: lat,
+			lng: long
 		}),
 		headers: {
 			"Content-Type": "application/json"
