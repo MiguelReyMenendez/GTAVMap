@@ -298,12 +298,13 @@ $(function() {
 
 				google.maps.event.addListener(markerobject, 'click', function(evt){
 					// Set content
-					infoWindow.setOptions({
+/* 					infoWindow.setOptions({
 						content: '<p>' + 'Current Lat: ' + evt.latLng.lat().toFixed(3) + '<br>' + 'Current Lng: ' + evt.latLng.lng().toFixed(3) + '<br>' + 'Zoom Level: ' + map.getZoom() + '</p>'
-					});
+					}); */
 				
 					// Agrega un formulario simple dentro del infoWindow
-					infoWindow.setContent(`
+					infoWindow.setOptions({
+						content:`
 						<form id="addATMForm">
 							<label for="type">Type:</label>
 							<select id="type" name="type" required>
@@ -316,10 +317,10 @@ $(function() {
 				
 							<label for="notes">Notes:</label>
 							<input type="text" id="notes" name="notes" required><br>
-				
 							<button type="button" onclick="submitATMForm()">Add ATM</button>
 						</form>
-					`);
+					`
+					});
 				
 					// Lógica para obtener los campos type, title y notes
 /* 					const submitATMForm = function() {
