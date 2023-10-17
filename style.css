@@ -249,13 +249,13 @@ body { height: 100%; margin: 0; padding: 0 }
  */
 
 .scrollable {
-	height: 400px;
-	overflow: scroll;
+	height: fit-content;
+	/* overflow: scroll; */
 }
 
 @media only screen and (max-device-width: 568px) { 
 	.scrollable {
-		height: 250px;
+		height: fit-content;
 	}
 }
 
