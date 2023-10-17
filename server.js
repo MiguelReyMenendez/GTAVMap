@@ -1,6 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const path = require('path');  // Agregamos esta línea para manejar rutas de archivos
+const path = require('path');
 const fs = require('fs');
 
 const app = express();
@@ -11,6 +11,11 @@ app.use(bodyParser.json());
 
 // Configura Express para servir archivos estáticos desde la carpeta 'js'
 app.use(express.static(path.join(__dirname, 'js')));
+
+// Ruta para servir el archivo index.html
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
+});
 
 // Maneja solicitudes POST para agregar nuevos ATMs
 app.post('/add_atm', (req, res) => {
