@@ -10,7 +10,23 @@ app.use(bodyParser.json());
 
 // Maneja solicitudes POST para agregar nuevos ATMs
 app.post('/add_atm', (req, res) => {
-    // ... tu lógica existente para manejar las solicitudes de ATMs
+    try {
+        const newATM = req.body;
+
+        // Lee el contenido actual de locations.json
+        const currentData = JSON.parse(fs.readFileSync('locations.json', 'utf-8'));
+
+        // Agrega el nuevo ATM al array existente
+        currentData.push(newATM);
+
+        // Escribe el contenido actualizado de vuelta a locations.json
+        fs.writeFileSync('locations.json', JSON.stringify(currentData, null, 2), 'utf-8');
+
+        res.status(200).json({ message: 'ATM agregado con éxito.' });
+    } catch (error) {
+        console.error('Error al agregar ATM:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
 });
 
 // Ruta para servir el archivo HTML
