@@ -310,7 +310,7 @@ $(function() {
 					   infoWindow.open(map, markerobject);
 				
 					// Lógica para obtener los campos type, title y notes
-/* 					const submitATMForm = function() {
+					const submitATMForm = function() {
 						const type = document.getElementById("type").value;
 						const title = document.getElementById("title").value;
 						const notes = document.getElementById("notes").value;
@@ -340,7 +340,7 @@ $(function() {
 						.catch(error => {
 							console.error("Error al agregar datos:", error);
 						});
-					}; */
+					}; 
 				});
 				
 				// Función para generar un ID único (puedes ajustarla según tus necesidades)
