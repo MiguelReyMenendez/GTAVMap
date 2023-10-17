@@ -582,7 +582,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
  */
-submitATMForm() {
+function submitATMForm() {
 	const type = document.getElementById("type").value;
 	const title = document.getElementById("title").value;
 	const notes = document.getElementById("notes").value;
