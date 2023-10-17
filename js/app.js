@@ -519,14 +519,20 @@ document.addEventListener("DOMContentLoaded", function () {
         const notesInput = document.getElementById("notes");
         const latInput = document.getElementById("lat");
         const lngInput = document.getElementById("lng");
-		const serverAddress = window.location.origin;
+        const serverAddress = window.location.origin;
 
+        // Obtiene la fecha y hora actual en el formato requerido
+        const timestamp = new Date().toISOString();
 
+        // Crea el objeto newATM con el formato deseado
         const newATM = {
+            id: generateUniqueId(),  // Debes tener alguna lógica para generar un ID único
+            type: "ATMs",
+            timestamp: timestamp,
             title: titleInput.value,
             notes: notesInput.value,
-            lat: latInput.value,
-            lng: lngInput.value
+            lat: parseFloat(latInput.value),
+            lng: parseFloat(lngInput.value)
         };
 
         // Realiza una solicitud AJAX (POST) al nuevo servidor Node.js
@@ -551,5 +557,9 @@ document.addEventListener("DOMContentLoaded", function () {
             console.error("Error al agregar datos:", error);
         });
     });
-});
 
+    // Función para generar un ID único (puedes ajustarla según tus necesidades)
+    function generateUniqueId() {
+        return '_' + Math.random().toString(36).substr(2, 9);
+    }
+});
