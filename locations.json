@@ -1,0 +1,27 @@
+[
+  {
+    "id":1,
+    "type":"Spots vehiculos",
+    "title":"Obey Tailgator",
+    "notes":"You can find Michaels story car (Audi A6/A8) on the parking lot of the golf course.",
+    "order":1,
+    "lat":69.908,
+    "lng":-138.230,
+    "video":{
+      "yt_id":"IdYI9VdsqT0",
+      "yt_user":"urparanoid",
+      "start":"2:13",
+      "end":"2:51"
+    }
+  },
+  {
+    "id":2,
+    "type":"ATMs",
+    "timestamp":"2023-10-16T10:49:21+00:00",
+    "title":"ATM Doble",
+    "notes":"Tienda de comics.",
+    "order":5,
+    "lat":69.318,
+    "lng":-125.166
+  }
+]
