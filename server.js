@@ -40,6 +40,6 @@ app.get('/', (req, res) => {
 app.use(express.static(__dirname));
 
 // Inicia el servidor en el puerto especificado
-app.listen(port, () => {
-    console.log(`Servidor escuchando en http://localhost:${port}`);
+app.listen(port, '0.0.0.0', () => {
+    console.log(`Servidor escuchando en http://0.0.0.0:${port}`);
 });
