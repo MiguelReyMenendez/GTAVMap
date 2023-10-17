@@ -12,8 +12,8 @@ app.use(bodyParser.json());
 // Configura Express para servir archivos estáticos desde la carpeta 'js'
 app.use(express.static(path.join(__dirname, 'js')));
 
-// Ruta para servir el archivo index.html
-app.get('/', (req, res) => {
+// Ruta para servir el archivo index.html para cualquier ruta
+app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
