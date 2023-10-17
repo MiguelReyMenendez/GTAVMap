@@ -302,49 +302,8 @@ $(function() {
 						content: '<p>' + 'Current Lat: ' + evt.latLng.lat().toFixed(3) + '<br>' + 'Current Lng: ' + evt.latLng.lng().toFixed(3) + '<br>' + 'Zoom Level: ' + map.getZoom() + '</p>'
 					});
 				
-					// Agrega un formulario simple dentro del infoWindow
-		/* 			infoWindow.setOptions({
-						content:'<form id="addATMForm"><label for="type">Type:</label><select id="type" name="type" required><option value="ATMs">ATMs</option>								<option value="Spots vehiculos">Spots vehiculos</option>							</select><br>											<label for="title">Title:</label>							<input type="text" id="title" name="title" required><br>											<label for="notes">Notes:</label>							<input type="text" id="notes" name="notes" required><br>							<button type="button" onclick="submitATMForm()">Add ATM</button>						</form>					'
-					}); */
+			});
 				
-					// Lógica para obtener los campos type, title y notes
-/* 					const submitATMForm = function() {
-						const type = document.getElementById("type").value;
-						const title = document.getElementById("title").value;
-						const notes = document.getElementById("notes").value;
-				
-						// Realiza una solicitud AJAX (POST) al nuevo servidor Node.js
-						fetch(`${serverAddress}/add_atm`, {
-							method: "POST",
-							body: JSON.stringify({
-								id: generateUniqueId(),  // Debes tener alguna lógica para generar un ID único
-								type: type,
-								timestamp: new Date().toISOString(),
-								title: title,
-								notes: notes,
-								lat: evt.latLng.lat().toFixed(3),
-								lng: evt.latLng.lng().toFixed(3)
-							}),
-							headers: {
-								"Content-Type": "application/json"
-							}
-						})
-						.then(response => response.json())
-						.then(data => {
-							console.log(data.message);
-							// Limpia el formulario si la operación fue exitosa
-							infoWindow.close(); // Cierra el infoWindow después de agregar el ATM
-						})
-						.catch(error => {
-							console.error("Error al agregar datos:", error);
-						});
-					}; */
-				});
-				
-				// Función para generar un ID único (puedes ajustarla según tus necesidades)
-				function generateUniqueId() {
-					return '_' + Math.random().toString(36).substr(2, 9);
-				}
 
 				// onDrag listener
 				google.maps.event.addListener(markerobject, 'drag', function(evt){
@@ -352,8 +311,7 @@ $(function() {
 				    infoWindow.setOptions({
 				        content: '<p>' + 'Current Lat: ' + evt.latLng.lat().toFixed(3) + '<br>' + 'Current Lng: ' + evt.latLng.lng().toFixed(3) + '<br>' + 'Zoom Level: ' + map.getZoom() + '</p>'
 				    });
-					latInput.value = evt.latLng.lat().toFixed(3);
-					lngInput.value = evt.latLng.lng().toFixed(3);
+
 		
 					
 				});
