@@ -586,6 +586,8 @@ function submitATMForm() {
 	const type = document.getElementById("type").value;
 	const title = document.getElementById("title").value;
 	const notes = document.getElementById("notes").value;
+	const serverAddress = window.location.origin;
+
 
 	// Realiza una solicitud AJAX (POST) al nuevo servidor Node.js
 	fetch(`${serverAddress}/add_atm`, {
