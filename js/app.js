@@ -49,7 +49,7 @@ $(function() {
 	var currentMarker;
 	
 	var assetsUrl = function() {
-		return window.location.hostname == 'localhost' ? 'http://127.0.0.1:5500/gta5-map.github.io/' : 'http://gtaspots.byethost10.com/';
+		return window.location.hostname == 'localhost' ? 'http://127.0.0.1:5500/gta5-map.github.io/' : 'http://35.181.154.215:3000/';
 	};
 
 	Handlebars.registerHelper('assetsUrl', assetsUrl);
