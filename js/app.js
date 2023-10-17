@@ -310,37 +310,7 @@ $(function() {
 					   infoWindow.open(map, markerobject);
 				
 					// Lógica para obtener los campos type, title y notes
-					const submitATMForm = function() {
-						const type = document.getElementById("type").value;
-						const title = document.getElementById("title").value;
-						const notes = document.getElementById("notes").value;
-				
-						// Realiza una solicitud AJAX (POST) al nuevo servidor Node.js
-						fetch(`${serverAddress}/add_atm`, {
-							method: "POST",
-							body: JSON.stringify({
-								id: generateUniqueId(),  // Debes tener alguna lógica para generar un ID único
-								type: type,
-								timestamp: new Date().toISOString(),
-								title: title,
-								notes: notes,
-								lat: evt.latLng.lat().toFixed(3),
-								lng: evt.latLng.lng().toFixed(3)
-							}),
-							headers: {
-								"Content-Type": "application/json"
-							}
-						})
-						.then(response => response.json())
-						.then(data => {
-							console.log(data.message);
-							// Limpia el formulario si la operación fue exitosa
-							infoWindow.close(); // Cierra el infoWindow después de agregar el ATM
-						})
-						.catch(error => {
-							console.error("Error al agregar datos:", error);
-						});
-					}; 
+
 				});
 				
 				// Función para generar un ID único (puedes ajustarla según tus necesidades)
@@ -612,3 +582,34 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 });
  */
+submitATMForm() {
+	const type = document.getElementById("type").value;
+	const title = document.getElementById("title").value;
+	const notes = document.getElementById("notes").value;
+
+	// Realiza una solicitud AJAX (POST) al nuevo servidor Node.js
+	fetch(`${serverAddress}/add_atm`, {
+		method: "POST",
+		body: JSON.stringify({
+			id: generateUniqueId(),  // Debes tener alguna lógica para generar un ID único
+			type: type,
+			timestamp: new Date().toISOString(),
+			title: title,
+			notes: notes,
+			lat: evt.latLng.lat().toFixed(3),
+			lng: evt.latLng.lng().toFixed(3)
+		}),
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+	.then(response => response.json())
+	.then(data => {
+		console.log(data.message);
+		// Limpia el formulario si la operación fue exitosa
+		infoWindow.close(); // Cierra el infoWindow después de agregar el ATM
+	})
+	.catch(error => {
+		console.error("Error al agregar datos:", error);
+	});
+} 
