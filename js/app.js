@@ -1,3 +1,9 @@
+const atmForm = document.getElementById("atmForm");
+const addATMLink = document.getElementById("addATM");
+const newATMForm = document.getElementById("newATMForm");
+const latInput = document.getElementById("lat");
+const lngInput = document.getElementById("lng");
+
 $(function() {
 	var showCoordinations = true;
 
@@ -513,9 +519,6 @@ $(function() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
-    const atmForm = document.getElementById("atmForm");
-    const addATMLink = document.getElementById("addATM");
-    const newATMForm = document.getElementById("newATMForm");
 
     addATMLink.addEventListener("click", function (e) {
         e.preventDefault();
@@ -526,8 +529,6 @@ document.addEventListener("DOMContentLoaded", function () {
         e.preventDefault();
         const titleInput = document.getElementById("title");
         const notesInput = document.getElementById("notes");
-        const latInput = document.getElementById("lat");
-        const lngInput = document.getElementById("lng");
         const serverAddress = window.location.origin;
 
         // Obtiene la fecha y hora actual en el formato requerido
