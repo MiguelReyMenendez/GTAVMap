@@ -550,7 +550,7 @@ $(function() {
 
 
 
-
+/* 
 document.addEventListener("DOMContentLoaded", function () {
 	console.log("atmForm:", atmForm);
     console.log("addATMLink:", addATMLink);
@@ -609,3 +609,4 @@ document.addEventListener("DOMContentLoaded", function () {
         return '_' + Math.random().toString(36).substr(2, 9);
     }
 });
+ */
