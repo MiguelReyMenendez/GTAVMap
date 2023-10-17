@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const fs = require('fs');
 
 const app = express();
@@ -7,6 +8,7 @@ const port = process.env.PORT || 3000;
 
 // Configura middleware para analizar solicitudes JSON
 app.use(bodyParser.json());
+app.use(cors());
 
 // Maneja solicitudes POST para agregar nuevos ATMs
 app.post('/add_atm', (req, res) => {
