@@ -519,6 +519,8 @@ document.addEventListener("DOMContentLoaded", function () {
         const notesInput = document.getElementById("notes");
         const latInput = document.getElementById("lat");
         const lngInput = document.getElementById("lng");
+		const serverAddress = window.location.origin;
+
 
         const newATM = {
             title: titleInput.value,
@@ -528,7 +530,7 @@ document.addEventListener("DOMContentLoaded", function () {
         };
 
         // Realiza una solicitud AJAX (POST) al nuevo servidor Node.js
-        fetch("http://localhost:3000/add_atm", {
+        fetch(`${serverAddress}/add_atm`, {
             method: "POST",
             body: JSON.stringify(newATM),
             headers: {
