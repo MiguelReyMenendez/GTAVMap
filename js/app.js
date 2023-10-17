@@ -306,8 +306,7 @@ $(function() {
 					console.log("latInput:", latInput);  // Agrega este log
 					console.log("lngInput:", lngInput);  // Agrega este log
 				
-					latInput.value = evt.latLng.lat().toFixed(3);
-					lngInput.value = evt.latLng.lng().toFixed(3);
+
 
 				    // Open the info window
 				    //infoWindow.open(map, markerobject);
@@ -519,6 +518,9 @@ $(function() {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+	console.log("atmForm:", atmForm);
+    console.log("addATMLink:", addATMLink);
+    console.log("newATMForm:", newATMForm);
 
     addATMLink.addEventListener("click", function (e) {
         e.preventDefault();
