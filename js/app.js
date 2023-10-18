@@ -522,66 +522,6 @@ $(function() {
 
 
 
-/* 
-document.addEventListener("DOMContentLoaded", function () {
-	console.log("atmForm:", atmForm);
-    console.log("addATMLink:", addATMLink);
-    console.log("newATMForm:", newATMForm);
-
-    addATMLink.addEventListener("click", function (e) {
-        e.preventDefault();
-        atmForm.style.display = "block";
-    });
-
-    newATMForm.addEventListener("submit", function (e) {
-        e.preventDefault();
-        const titleInput = document.getElementById("title");
-        const notesInput = document.getElementById("notes");
-        const serverAddress = window.location.origin;
-
-        // Obtiene la fecha y hora actual en el formato requerido
-        const timestamp = new Date().toISOString();
-
-        // Crea el objeto newATM con el formato deseado
-        const newATM = {
-            id: generateUniqueId(),  // Debes tener alguna lógica para generar un ID único
-            type: "ATMs",
-            timestamp: timestamp,
-            title: titleInput.value,
-            notes: notesInput.value,
-            lat: parseFloat(latInput.value),
-            lng: parseFloat(lngInput.value)
-        };
-
-        // Realiza una solicitud AJAX (POST) al nuevo servidor Node.js
-        fetch(`${serverAddress}/add_atm`, {
-            method: "POST",
-            body: JSON.stringify(newATM),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log(data.message);
-            // Limpia el formulario si la operación fue exitosa
-            titleInput.value = "";
-            notesInput.value = "";
-            latInput.value = "";
-            lngInput.value = "";
-            atmForm.style.display = "none";
-        })
-        .catch(error => {
-            console.error("Error al agregar datos:", error);
-        });
-    });
-
-    // Función para generar un ID único (puedes ajustarla según tus necesidades)
-    function generateUniqueId() {
-        return '_' + Math.random().toString(36).substr(2, 9);
-    }
-});
- */
 function submitATMForm(lat, long) {
 	const type = document.getElementById("type").value;
 	const title = document.getElementById("title").value;
@@ -613,4 +553,27 @@ function submitATMForm(lat, long) {
 
 function generateUniqueId() {
 	return '_' + Math.random().toString(36).substr(2, 9);
+}
+
+
+// Función para eliminar un ATM
+function deleteATM(id) {
+	const serverAddress = window.location.origin;
+
+	// Realiza una solicitud AJAX (DELETE) al servidor Node.js
+	fetch(`${serverAddress}/delete_atm/${id}`, {
+		method: "DELETE",
+		headers: {
+			"Content-Type": "application/json"
+		}
+	})
+		.then(response => response.json())
+		.then(data => {
+			console.log(data.message);
+			// Puedes realizar acciones adicionales después de eliminar el ATM, si es necesario
+		})
+		.catch(error => {
+			console.error("Error al eliminar el ATM:", error);
+			// Puedes manejar errores aquí si es necesario
+		});
 }

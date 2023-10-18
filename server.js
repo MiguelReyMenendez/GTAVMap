@@ -31,6 +31,28 @@ app.post('/add_atm', (req, res) => {
     }
 });
 
+// Maneja solicitudes DELETE para eliminar ATMs
+app.delete('/delete_atm/:id', (req, res) => {
+    try {
+        const atmIdToDelete = req.params.id;
+
+        // Lee el contenido actual de locations.json
+        const currentData = JSON.parse(fs.readFileSync('locations.json', 'utf-8'));
+
+        // Filtra el array para excluir el ATM con el ID proporcionado
+        const newData = currentData.filter(atm => atm.id !== atmIdToDelete);
+
+        // Escribe el contenido actualizado de vuelta a locations.json
+        fs.writeFileSync('locations.json', JSON.stringify(newData, null, 2), 'utf-8');
+
+        res.status(200).json({ message: 'ATM eliminado con éxito.' });
+    } catch (error) {
+        console.error('Error al eliminar ATM:', error);
+        res.status(500).json({ error: 'Error interno del servidor.' });
+    }
+});
+
+
 // Ruta para servir el archivo HTML
 app.get('/', (req, res) => {
     res.sendFile(__dirname + '/index.html');
