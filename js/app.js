@@ -570,10 +570,11 @@ function deleteATM(id) {
 		.then(response => response.json())
 		.then(data => {
 			console.log(data.message);
-			// Puedes realizar acciones adicionales después de eliminar el ATM, si es necesario
+			location.reload();
 		})
 		.catch(error => {
 			console.error("Error al eliminar el ATM:", error);
-			// Puedes manejar errores aquí si es necesario
+			location.reload();
+
 		});
 }
