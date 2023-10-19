@@ -67,7 +67,7 @@
 				<h3>{{name}}</h3>
 				<ul>
 					{{#each types}}
-						<li><label><input type="checkbox" {{#if enabled}}checked{{/if}} value="{{name}}"> <img src="{{assetsUrl}}icons/{{icon}}"> {{name}}</label> <a href="#" class="details" data-name="{{name}}"><i class="icon-chevron-sign-right"></i></a> <!--<a href="#tour" class="tt"></a>--></li>
+						<li class="flex items-center justify-between"><label><input type="checkbox" class="flex gap-2 items-baseline w-auto" {{#if enabled}}checked{{/if}} value="{{name}}"> <img src="{{assetsUrl}}icons/{{icon}}"> {{name}}</label> <a href="#" class="details" data-name="{{name}}"><i class="icon-chevron-sign-right"></i></a> <!--<a href="#tour" class="tt"></a>--></li>
 					{{/each}}
 				</ul>
 			</section>
