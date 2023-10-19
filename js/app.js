@@ -272,7 +272,7 @@ $(function () {
         mapTypeId: this.mapType,
       }
 
-      _.bindAll(this, 'getTileImage', 'updateMapBackground', 'enableDrawingMode', 'handlePolygonDrawn')
+      _.bindAll(this, 'getTileImage', 'updateMapBackground')
 
       this.popupTemplate = Handlebars.compile($('#markerPopupTemplate2').html())
 
@@ -356,32 +356,7 @@ $(function () {
 
       return this
     },
-    enableDrawingMode: function () {
-      // Habilita la herramienta de dibujo de polígonos
-	  console.log('dibujar')
-      var drawingManager = new google.maps.drawing.DrawingManager({
-        drawingMode: google.maps.drawing.OverlayType.POLYGON,
-        drawingControl: false,
-        polygonOptions: {
-          editable: true,
-          draggable: true,
-        },
-      })
-      drawingManager.setMap(this.map)
-
-      // Escucha el evento de dibujo completado
-      google.maps.event.addListener(drawingManager, 'overlaycomplete', this.handlePolygonDrawn)
-    },
-
-    handlePolygonDrawn: function (event) {
-      // Maneja el evento cuando se completa el dibujo de un polígono
-      if (event.type === google.maps.drawing.OverlayType.POLYGON) {
-        var polygon = event.overlay
-
-        // Puedes hacer algo con el polígono, como almacenarlo o mostrar información
-        console.log('Polígono dibujado. Coordenadas:', polygon.getPath().getArray())
-      }
-    },
+   
 
     getMap: function () {
       return this.map
@@ -589,3 +564,38 @@ function deleteATM(id) {
       location.reload()
     })
 }
+
+
+  
+	// Función para habilitar la herramienta de dibujo
+	window.enableDrawingMode = function() {
+	  console.log('this');
+	  // Habilita la herramienta de dibujo de polígonos
+	  var drawingManager = new google.maps.drawing.DrawingManager({
+		drawingMode: google.maps.drawing.OverlayType.POLYGON,
+		drawingControl: false,
+		polygonOptions: {
+		  editable: true,
+		  draggable: true,
+		}
+	  });
+	  drawingManager.setMap(mapView.getMap());  // Asegúrate de tener una referencia a tu objeto MapView
+  
+	  // Escucha el evento de dibujo completado
+	  google.maps.event.addListener(drawingManager, 'overlaycomplete', handlePolygonDrawn);
+	}
+  
+	// Función para manejar el evento de dibujo completado
+	function handlePolygonDrawn(event) {
+	  // Maneja el evento cuando se completa el dibujo de un polígono
+	  if (event.type === google.maps.drawing.OverlayType.POLYGON) {
+		var polygon = event.overlay;
+  
+		// Puedes hacer algo con el polígono, como almacenarlo o mostrar información
+		console.log('Polígono dibujado. Coordenadas:', polygon.getPath().getArray());
+	  }
+	}
+  
+
+  
+
