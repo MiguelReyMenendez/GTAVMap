@@ -1,561 +1,591 @@
-const atmForm = document.getElementById("atmForm");
-const addATMLink = document.getElementById("addATM");
-const newATMForm = document.getElementById("newATMForm");
-const latInput = document.getElementById("lat");
-const lngInput = document.getElementById("lng");
-
-$(function() {
-	var showCoordinations = true;
-
-	if (window.location.protocol != "http:") {
-	    window.location.href = "http:" + window.location.href.substring(window.location.protocol.length);		
-	}
+const atmForm = document.getElementById('atmForm')
+const addATMLink = document.getElementById('addATM')
+const newATMForm = document.getElementById('newATMForm')
+const latInput = document.getElementById('lat')
+const lngInput = document.getElementById('lng')
 
 
-	var $types = $('.types');
 
-	var onResize = function() {
-		$types.css({
-			maxHeight: $(window).height() - parseInt($types.css('marginTop'), 10) - parseInt($types.css('marginBottom'), 10) - parseInt($('header').height()) + 6
-		});
-	};
+$(function () {
+  var showCoordinations = true
 
-	onResize();
+  if (window.location.protocol != 'http:') {
+    window.location.href = 'http:' + window.location.href.substring(window.location.protocol.length)
+  }
 
-	$(window).resize(onResize);
+  var $types = $('.types')
 
+  var onResize = function () {
+    $types.css({
+      maxHeight: $(window).height() - parseInt($types.css('marginTop'), 10) - parseInt($types.css('marginBottom'), 10) - parseInt($('header').height()) + 6,
+    })
+  }
 
-	// window.isTourMode = false;
+  onResize()
 
-	// if (window.location.hash == '#tour') {
-	// 	$('body').addClass('tour');
-	// 	window.isTourMode = true;
-	// }
-	// else {
-	// 	$('body').removeClass('tour');
-	// 	window.isTourMode = false;
-	// 	// $('#map').css({position:'absolute'});
-	// }
+  $(window).resize(onResize)
 
-	// $(window).on('hashchange', function() {
-	// 	if (window.location.hash == '#tour') {
-	// 		$('body').addClass('tour');
-	// 		$('#map').css({position:'relative'});
-	// 		window.isTourMode = true;
-	// 		var x = locations.findWhere({ type: 'Nuclear Waste' }); 
-	// 		Vent.trigger('location:clicked', x, true);
-	// 	}
-	// 	else {
-	// 		$('body').removeClass('tour');	
-	// 		$('#map').css({position:'absolute'});
-	// 		window.isTourMode = false;
-	// 	}
-	// });
-	
-	var currentMarker;
-	
-	var assetsUrl = function() {
-		return window.location.hostname == 'localhost' ? 'http://127.0.0.1:5500/gta5-map.github.io/' : 'http://35.181.154.215:3000/';
-	};
+  // window.isTourMode = false;
 
-	Handlebars.registerHelper('assetsUrl', assetsUrl);
+  // if (window.location.hash == '#tour') {
+  // 	$('body').addClass('tour');
+  // 	window.isTourMode = true;
+  // }
+  // else {
+  // 	$('body').removeClass('tour');
+  // 	window.isTourMode = false;
+  // 	// $('#map').css({position:'absolute'});
+  // }
 
-	var timestampToSeconds = function(stamp) {
-		stamp = stamp.split(':');
-		return (parseInt(stamp[0], 10) * 60) + parseInt(stamp[1], 10);
-	};
+  // $(window).on('hashchange', function() {
+  // 	if (window.location.hash == '#tour') {
+  // 		$('body').addClass('tour');
+  // 		$('#map').css({position:'relative'});
+  // 		window.isTourMode = true;
+  // 		var x = locations.findWhere({ type: 'Nuclear Waste' });
+  // 		Vent.trigger('location:clicked', x, true);
+  // 	}
+  // 	else {
+  // 		$('body').removeClass('tour');
+  // 		$('#map').css({position:'absolute'});
+  // 		window.isTourMode = false;
+  // 	}
+  // });
 
-	Handlebars.registerHelper('timestampToSeconds', timestampToSeconds);
+  var currentMarker
 
-	var Vent = _.extend({}, Backbone.Events);
+  var assetsUrl = function () {
+    return window.location.hostname == 'localhost' ? 'http://127.0.0.1:5500/gta5-map.github.io/' : 'http://35.181.154.215:3000/'
+  }
 
-	var LocationModel = Backbone.Model.extend({
-		initialize: function() {
-			var marker = new google.maps.Marker({
-				position: new google.maps.LatLng(this.get('lat'), this.get('lng')),
-				icon: {
-					url: assetsUrl()+'icons/'+categories.getIcon(this.get('type')),
-					scaledSize: new google.maps.Size(32, 37),
-				}
-			});
+  Handlebars.registerHelper('assetsUrl', assetsUrl)
 
-			_.bindAll(this, 'markerClicked');
-			google.maps.event.addListener(marker, 'click', this.markerClicked);
+  var timestampToSeconds = function (stamp) {
+    stamp = stamp.split(':')
+    return parseInt(stamp[0], 10) * 60 + parseInt(stamp[1], 10)
+  }
 
-			this.set({ marker: marker });
-		},
+  Handlebars.registerHelper('timestampToSeconds', timestampToSeconds)
 
-		markerClicked: function() {
-			Vent.trigger('location:clicked', this);
-		},
+  var Vent = _.extend({}, Backbone.Events)
 
-		removeHighlight: function() {
-			this.get('marker').setIcon({
-				url: this.get('marker').getIcon().url,
-				scaledSize: new google.maps.Size(22, 22)
-			});
-		},
+  var LocationModel = Backbone.Model.extend({
+    initialize: function () {
+      var marker = new google.maps.Marker({
+        position: new google.maps.LatLng(this.get('lat'), this.get('lng')),
+        icon: {
+          url: assetsUrl() + 'icons/' + categories.getIcon(this.get('type')),
+          scaledSize: new google.maps.Size(32, 37),
+        },
+      })
 
-		highlightMarker: function() {
-			if (currentMarker == this) {
-				Vent.trigger('location:clicked', this);
-			}
-			else {
-				if (currentMarker) currentMarker.removeHighlight();
-				mapView.closePopupLocation();
-				currentMarker = this;
-				this.get('marker').setIcon({
-					url: this.get('marker').getIcon().url,
-					scaledSize: new google.maps.Size(32, 32)
-				});
-			}
-		}
-	});
-	var LocationsCollection = Backbone.Collection.extend({
-		model: LocationModel,
-		url: 'locations.json'
-	});
+      _.bindAll(this, 'markerClicked')
+      google.maps.event.addListener(marker, 'click', this.markerClicked)
 
-	var locations = window.locations = new LocationsCollection();
+      this.set({ marker: marker })
+    },
 
-	var CategoryModel = Backbone.Model.extend({ });
-	var CategoriesCollection = Backbone.Collection.extend({
+    markerClicked: function () {
+      Vent.trigger('location:clicked', this)
+    },
 
-		model: CategoryModel,
+    removeHighlight: function () {
+      this.get('marker').setIcon({
+        url: this.get('marker').getIcon().url,
+        scaledSize: new google.maps.Size(22, 22),
+      })
+    },
 
-		getIcon: function(type) {
-			var o = this.findWhere({ name: type });
-			if (o) {
-				return o.get('icon');
-			}
+    highlightMarker: function () {
+      if (currentMarker == this) {
+        Vent.trigger('location:clicked', this)
+      } else {
+        if (currentMarker) currentMarker.removeHighlight()
+        mapView.closePopupLocation()
+        currentMarker = this
+        this.get('marker').setIcon({
+          url: this.get('marker').getIcon().url,
+          scaledSize: new google.maps.Size(32, 32),
+        })
+      }
+    },
+  })
+  var LocationsCollection = Backbone.Collection.extend({
+    model: LocationModel,
+    url: 'locations.json',
+  })
 
-			return assetsUrl() + (o ? o.get('icon') : 'blank.png');
-		},
+  var locations = (window.locations = new LocationsCollection())
 
-		forView: function(type) {
-			var g = this.groupBy('type');
-			return _(g).map(function(categories, type) {
-				return {
-					name: type,
-					types: _.map(categories, function(category) { return category.toJSON(); })
-				}
-			});
-		}
+  var CategoryModel = Backbone.Model.extend({})
+  var CategoriesCollection = Backbone.Collection.extend({
+    model: CategoryModel,
 
-	});
+    getIcon: function (type) {
+      var o = this.findWhere({ name: type })
+      if (o) {
+        return o.get('icon')
+      }
 
-	var categories = window.cats = new CategoriesCollection([
-		{
-			name: 'Spots vehiculos',
-			icon: 'General/cars.png',
-			type: 'General',
-			enabled: true
-		},
-		{
-			name: 'ATMs',
-			icon: 'General/atms.png',
-			type: 'General',
-			enabled: true
-		},
-		{
-			name: 'Otros',
-			icon: 'General/wall-breach.png',
-			type: 'General',
-			enabled: true
-		}
-	]);
+      return assetsUrl() + (o ? o.get('icon') : 'blank.png')
+    },
 
-	var CategoriesView = Backbone.View.extend({
+    forView: function (type) {
+      var g = this.groupBy('type')
+      return _(g).map(function (categories, type) {
+        return {
+          name: type,
+          types: _.map(categories, function (category) {
+            return category.toJSON()
+          }),
+        }
+      })
+    },
+  })
 
-		initialize: function() {
-			this.template = Handlebars.compile($('#categoriesTemplate').html());
-		},
+  var categories = (window.cats = new CategoriesCollection([
+    {
+      name: 'Spots vehiculos',
+      icon: 'General/cars.png',
+      type: 'General',
+      enabled: true,
+    },
+    {
+      name: 'ATMs',
+      icon: 'General/atms.png',
+      type: 'General',
+      enabled: true,
+    },
+    {
+      name: 'Otros',
+      icon: 'General/wall-breach.png',
+      type: 'General',
+      enabled: true,
+    },
+  ]))
 
-		render: function() {
-			this.$el.html(this.template({
-				categories: categories.forView()
-			}));
-			$('#typeDetails').hide();
-			return this;
-		},
+  var CategoriesView = Backbone.View.extend({
+    initialize: function () {
+      this.template = Handlebars.compile($('#categoriesTemplate').html())
+    },
 
-		events: {
-			'change input': 'toggleLocations',
-			'click .details': 'showDetails'
-		},
+    render: function () {
+      this.$el.html(
+        this.template({
+          categories: categories.forView(),
+        })
+      )
+      $('#typeDetails').hide()
+      return this
+    },
 
-		toggleLocations: function(e) {
-			var $e = $(e.currentTarget),
-				type = $e.val(),
-				showLocations = $e.is(':checked'),
-				models = locations.where({ type: type });
+    events: {
+      'change input': 'toggleLocations',
+      'click .details': 'showDetails',
+    },
 
-			if (showLocations) {
-				Vent.trigger('locations:visible', models);
-			}
-			else {
-				Vent.trigger('locations:invisible', models);
-			}	
-		},
+    toggleLocations: function (e) {
+      var $e = $(e.currentTarget),
+        type = $e.val(),
+        showLocations = $e.is(':checked'),
+        models = locations.where({ type: type })
 
-		showDetails: function(e) {
-			e.preventDefault();
-			var typeName = $(e.currentTarget).data('name');
-			this.$el.find('input[value="'+typeName+'"]').prop('checked', true).trigger('change');
+      if (showLocations) {
+        Vent.trigger('locations:visible', models)
+      } else {
+        Vent.trigger('locations:invisible', models)
+      }
+    },
 
-			var type = categories.findWhere({ name: typeName });
+    showDetails: function (e) {
+      e.preventDefault()
+      var typeName = $(e.currentTarget).data('name')
+      this.$el
+        .find('input[value="' + typeName + '"]')
+        .prop('checked', true)
+        .trigger('change')
 
-			var details = new CategoryDetailsView({
-				el: '#typeDetails',
-				type: type
-			});
-			details.render();
+      var type = categories.findWhere({ name: typeName })
 
-		}
+      var details = new CategoryDetailsView({
+        el: '#typeDetails',
+        type: type,
+      })
+      details.render()
+    },
+  })
 
-	});
+  var CategoryDetailsView = Backbone.View.extend({
+    initialize: function () {
+      this.template = Handlebars.compile($('#categoryDetailsTemplate').html())
+    },
 
-	var CategoryDetailsView = Backbone.View.extend({
+    events: {
+      'click a.back': 'goBack',
+      'click li': 'showMarker',
+    },
 
-		initialize: function() {
-			this.template = Handlebars.compile($('#categoryDetailsTemplate').html());
-		},
+    goBack: function (e) {
+      e.preventDefault()
+      this.$el.empty()
+      this.off()
+      $('#types').show()
+    },
 
-		events: {
-			'click a.back': 'goBack',
-			'click li': 'showMarker'
-		},
+    showMarker: function (e) {
+      var location = locations.get($(e.currentTarget).data('id'))
+      location.highlightMarker()
+      map.panTo(location.get('marker').getPosition())
+      map.setZoom(5)
+    },
 
-		goBack: function(e) {
-			e.preventDefault();
-			this.$el.empty();
-			this.off();
-			$('#types').show();
-		},
+    render: function () {
+      var name = this.options.type.get('name')
+      var locs = locations.where({ type: name })
+      this.$el.html(
+        this.template({
+          type: this.options.type.toJSON(),
+          locations: _(locs).map(function (x) {
+            var d = x.toJSON()
+            if (name == 'Money') name = 'Hidden Package'
+            d.title = d.title.replace(name + ' ', '')
+            return d
+          }),
+        })
+      )
+      $('#types').hide()
+      this.$el.show()
+      return this
+    },
+  })
 
-		showMarker: function(e) {
-			var location = locations.get($(e.currentTarget).data('id'));
-			location.highlightMarker();
-			map.panTo(location.get('marker').getPosition());
-			map.setZoom(5);
-		},
+  var MapView = Backbone.View.extend({
+    initialize: function () {
+      this.mapType = 'Satellite'
+      this.mapDetails = { Atlas: '#0fa8d2', Satellite: '#143d6b', Road: '#1862ad' }
+      this.mapOptions = {
+        center: new google.maps.LatLng(66, -125),
+        zoom: 4,
+        disableDefaultUI: true,
+        mapTypeControl: true,
+        mapTypeControlOptions: { mapTypeIds: _.keys(this.mapDetails) },
+        mapTypeId: this.mapType,
+      }
 
-		render: function() {
-			var name = this.options.type.get('name');
-			var locs = locations.where({ type: name });
-			this.$el.html(this.template({
-				type: this.options.type.toJSON(),
-				locations: _(locs).map(function(x) {
-					var d = x.toJSON();
-					if (name == 'Money') name = 'Hidden Package';
-					d.title = d.title.replace(name+' ', '');
-					return d;
-				})
-			}));
-			$('#types').hide();
-			this.$el.show();
-			return this;
-		}
+      _.bindAll(this, 'getTileImage', 'updateMapBackground', 'enableDrawingMode', 'handlePolygonDrawn')
 
-	});
+      this.popupTemplate = Handlebars.compile($('#markerPopupTemplate2').html())
 
-	var MapView = Backbone.View.extend({
+      this.listenTo(Vent, 'locations:visible', this.showLocations)
+      this.listenTo(Vent, 'locations:invisible', this.hideLocations)
 
-		initialize: function() {
-			this.mapType = 'Satellite';
-			this.mapDetails = { 'Atlas': '#0fa8d2', 'Satellite': '#143d6b', 'Road': '#1862ad' };
-			this.mapOptions = {
-				center: new google.maps.LatLng(66, -125),
-				zoom: 4,
-				disableDefaultUI: true,
-				mapTypeControl: true,
-				mapTypeControlOptions: { mapTypeIds: _.keys(this.mapDetails) },
-				mapTypeId: this.mapType
-			};
+      this.listenTo(Vent, 'location:clicked', this.popupLocation)
+    },
 
-			_.bindAll(this, 'getTileImage', 'updateMapBackground');
+    render: function () {
+      // Function to update coordination info windows
+      function updateCoordinationWindow(markerobject) {
+        // Create new info window
+        var infoWindow = new google.maps.InfoWindow()
 
-			this.popupTemplate = Handlebars.compile($('#markerPopupTemplate2').html());
-
-			this.listenTo(Vent, 'locations:visible', this.showLocations);
-			this.listenTo(Vent, 'locations:invisible', this.hideLocations);
-
-			this.listenTo(Vent, 'location:clicked', this.popupLocation);
-		},
-
-		render: function() {
-
-			// Function to update coordination info windows
-		    function updateCoordinationWindow(markerobject){
-		        // Create new info window
-				var infoWindow = new google.maps.InfoWindow;
-
-				google.maps.event.addListener(markerobject, 'click', function(evt){
-					// Set content
-/* 					infoWindow.setOptions({
+        google.maps.event.addListener(markerobject, 'click', function (evt) {
+          // Set content
+          /* 					infoWindow.setOptions({
 						content: '<p>' + 'Current Lat: ' + evt.latLng.lat().toFixed(3) + '<br>' + 'Current Lng: ' + evt.latLng.lng().toFixed(3) + '<br>' + 'Zoom Level: ' + map.getZoom() + '</p>'
 					}); */
-				
-					// Agrega un formulario simple dentro del infoWindow
-					infoWindow.setOptions({
-						content:'<form id="addATMForm"><label for="type">Tipo:</label><select id="type" name="type" required><option value="ATMs">ATMs</option><option value="Spots vehiculos">Spots vehiculos</option><option value="Otros">Otros</option></select><br><label for="title">Nombre:</label><input type="text" id="title" name="title" required><br><label for="notes">Notas:</label><input type="text" id="notes" name="notes" required><br><button class="bg-gray-200 transition-all hover:bg-gray-300 mx-auto p-1.5 w-full" type="button" onclick="submitATMForm('+ evt.latLng.lat().toFixed(3)+', '+ evt.latLng.lng().toFixed(3)+')">Añadir punto</button></form>'
-					});
-					   // Open the info window
-					   infoWindow.open(map, markerobject);
-				
-					// Lógica para obtener los campos type, title y notes
 
-				});
-				
-				// Función para generar un ID único (puedes ajustarla según tus necesidades)
-				function generateUniqueId() {
-					return '_' + Math.random().toString(36).substr(2, 9);
-				}
+          // Agrega un formulario simple dentro del infoWindow
+          infoWindow.setOptions({
+            content:
+              '<form id="addATMForm"><label for="type">Tipo:</label><select id="type" name="type" required><option value="ATMs">ATMs</option><option value="Spots vehiculos">Spots vehiculos</option><option value="Otros">Otros</option></select><br><label for="title">Nombre:</label><input type="text" id="title" name="title" required><br><label for="notes">Notas:</label><input type="text" id="notes" name="notes" required><br><button class="bg-gray-200 transition-all hover:bg-gray-300 mx-auto p-1.5 w-full" type="button" onclick="submitATMForm(' +
+              evt.latLng.lat().toFixed(3) +
+              ', ' +
+              evt.latLng.lng().toFixed(3) +
+              ')">Añadir punto</button></form>',
+          })
+          // Open the info window
+          infoWindow.open(map, markerobject)
 
-				// onDrag listener
-				google.maps.event.addListener(markerobject, 'drag', function(evt){
-					// Set content
-				    infoWindow.setOptions({
-				        content: '<p>' + 'Current Lat: ' + evt.latLng.lat().toFixed(3) + '<br>' + 'Current Lng: ' + evt.latLng.lng().toFixed(3) + '<br>' + 'Zoom Level: ' + map.getZoom() + '</p>'
-				    });
-					latInput.value = evt.latLng.lat().toFixed(3);
-					lngInput.value = evt.latLng.lng().toFixed(3);
-		
-					
-				});
-			}
+          // Lógica para obtener los campos type, title y notes
+        })
 
-			var map = this.map = window.map = new google.maps.Map(this.el, this.mapOptions);
+        // Función para generar un ID único (puedes ajustarla según tus necesidades)
+        function generateUniqueId() {
+          return '_' + Math.random().toString(36).substr(2, 9)
+        }
 
-			this.initMapTypes(map, _.keys(this.mapDetails));
+        // onDrag listener
+        google.maps.event.addListener(markerobject, 'drag', function (evt) {
+          // Set content
+          infoWindow.setOptions({
+            content: '<p>' + 'Current Lat: ' + evt.latLng.lat().toFixed(3) + '<br>' + 'Current Lng: ' + evt.latLng.lng().toFixed(3) + '<br>' + 'Zoom Level: ' + map.getZoom() + '</p>',
+          })
+          latInput.value = evt.latLng.lat().toFixed(3)
+          lngInput.value = evt.latLng.lng().toFixed(3)
+        })
+      }
 
-			google.maps.event.addListener(map, 'maptypeid_changed', this.updateMapBackground);
+      var map = (this.map = window.map = new google.maps.Map(this.el, this.mapOptions))
 
-			google.maps.event.addDomListener(map, 'tilesloaded', function() {
-				if ($('#mapControlWrap').length == 0) {
-					$('div.gmnoprint').last().wrap('<div id="mapControlWrap" />');
-				}
-			});
+      this.initMapTypes(map, _.keys(this.mapDetails))
 
-			window.locs = [];
-			google.maps.event.addListener(map, 'rightclick', function(e) {
-				var marker = new google.maps.Marker({
-					map: map,
-					moveable: true,
-					draggable: true,
-					position: e.latLng
-				});
-				window.locs.push(marker);
+      google.maps.event.addListener(map, 'maptypeid_changed', this.updateMapBackground)
 
-				// Check if coords mode is enabled
-				if (showCoordinations) {
-					// Update/create info window
-					updateCoordinationWindow(marker);
-				};
-			});
+      google.maps.event.addDomListener(map, 'tilesloaded', function () {
+        if ($('#mapControlWrap').length == 0) {
+          $('div.gmnoprint').last().wrap('<div id="mapControlWrap" />')
+        }
+      })
 
-			return this;
-		},
+      window.locs = []
+      google.maps.event.addListener(map, 'rightclick', function (e) {
+        var marker = new google.maps.Marker({
+          map: map,
+          moveable: true,
+          draggable: true,
+          position: e.latLng,
+        })
+        window.locs.push(marker)
 
-		getMap: function() {
-			return this.map;
-		},
+        // Check if coords mode is enabled
+        if (showCoordinations) {
+          // Update/create info window
+          updateCoordinationWindow(marker)
+        }
+      })
 
-		initMapTypes: function(map, types) {
-			_.each(types, function(type) {
-				var mapTypeOptions = {
-					maxZoom: 7,
-					minZoom: 3,
-					name: type,
-					tileSize: new google.maps.Size(256, 256),
-					getTileUrl: this.getTileImage
-				};
-				map.mapTypes.set(type, new google.maps.ImageMapType(mapTypeOptions));
-			}, this);
-		},
+      return this
+    },
+    enableDrawingMode: function () {
+      // Habilita la herramienta de dibujo de polígonos
+	  console.log('dibujar')
+      var drawingManager = new google.maps.drawing.DrawingManager({
+        drawingMode: google.maps.drawing.OverlayType.POLYGON,
+        drawingControl: false,
+        polygonOptions: {
+          editable: true,
+          draggable: true,
+        },
+      })
+      drawingManager.setMap(this.map)
 
-		updateMapBackground: function() {
-			this.mapType = this.map.getMapTypeId();
-			this.$el.css({
-				backgroundColor: this.mapDetails[this.mapType]
-			});
-		},
+      // Escucha el evento de dibujo completado
+      google.maps.event.addListener(drawingManager, 'overlaycomplete', this.handlePolygonDrawn)
+    },
 
-		getTileImage: function(rawCoordinates, zoomLevel) {
-			var coord = this.normalizeCoordinates(rawCoordinates, zoomLevel);
-			if ( ! coord) {
-				return null;
-			}
+    handlePolygonDrawn: function (event) {
+      // Maneja el evento cuando se completa el dibujo de un polígono
+      if (event.type === google.maps.drawing.OverlayType.POLYGON) {
+        var polygon = event.overlay
 
-			return assetsUrl() + 'tiles/' + this.mapType.toLowerCase() + '/' + zoomLevel + '-' + coord.x + '_' + coord.y + '.png';
-		},
+        // Puedes hacer algo con el polígono, como almacenarlo o mostrar información
+        console.log('Polígono dibujado. Coordenadas:', polygon.getPath().getArray())
+      }
+    },
 
-		normalizeCoordinates: function(coord, zoom) {
-			var y = coord.y;
-			var x = coord.x;
+    getMap: function () {
+      return this.map
+    },
 
-			// tile range in one direction range is dependent on zoom level
-			// 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
-			var tileRange = 1 << zoom;
+    initMapTypes: function (map, types) {
+      _.each(
+        types,
+        function (type) {
+          var mapTypeOptions = {
+            maxZoom: 7,
+            minZoom: 3,
+            name: type,
+            tileSize: new google.maps.Size(256, 256),
+            getTileUrl: this.getTileImage,
+          }
+          map.mapTypes.set(type, new google.maps.ImageMapType(mapTypeOptions))
+        },
+        this
+      )
+    },
 
-			// don't repeat across y-axis (vertically)
-			if (y < 0 || y >= tileRange) {
-				return null;
-			}
+    updateMapBackground: function () {
+      this.mapType = this.map.getMapTypeId()
+      this.$el.css({
+        backgroundColor: this.mapDetails[this.mapType],
+      })
+    },
 
-			// repeat across x-axis
-			if (x < 0 || x >= tileRange) {
-				x = (x % tileRange + tileRange) % tileRange;
-			}
+    getTileImage: function (rawCoordinates, zoomLevel) {
+      var coord = this.normalizeCoordinates(rawCoordinates, zoomLevel)
+      if (!coord) {
+        return null
+      }
 
-			return {
-				x: x,
-				y: y
-			};
-		},
+      return assetsUrl() + 'tiles/' + this.mapType.toLowerCase() + '/' + zoomLevel + '-' + coord.x + '_' + coord.y + '.png'
+    },
 
-		showLocations: function(locations) {
-			_.each(locations, function(location) {
-				var marker = location.get('marker');
-				if ( ! marker.getMap()) {
-					marker.setMap(this.map);
-				}
-				marker.setVisible(true);
-			}, this);
-		},
+    normalizeCoordinates: function (coord, zoom) {
+      var y = coord.y
+      var x = coord.x
 
-		hideLocations: function(locations) {
-			_.each(locations, function(location) {
-				location.get('marker').setVisible(false);
-			});
-		},
+      // tile range in one direction range is dependent on zoom level
+      // 0 = 1 tile, 1 = 2 tiles, 2 = 4 tiles, 3 = 8 tiles, etc
+      var tileRange = 1 << zoom
 
-		popupLocation: function(location, panTo) {
+      // don't repeat across y-axis (vertically)
+      if (y < 0 || y >= tileRange) {
+        return null
+      }
 
-				var infoWindow = new google.maps.InfoWindow({
-					content: this.popupTemplate(location.toJSON()),
-				});
+      // repeat across x-axis
+      if (x < 0 || x >= tileRange) {
+        x = ((x % tileRange) + tileRange) % tileRange
+      }
 
-			    infoWindow.setOptions({
-			        maxHeight: 400
-			    });
+      return {
+        x: x,
+        y: y,
+      }
+    },
 
-				if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-				    infoWindow.setOptions({
-				        maxWidth: 180,
-			        	maxHeight: 300
-				    });
-				}
+    showLocations: function (locations) {
+      _.each(
+        locations,
+        function (location) {
+          var marker = location.get('marker')
+          if (!marker.getMap()) {
+            marker.setMap(this.map)
+          }
+          marker.setVisible(true)
+        },
+        this
+      )
+    },
 
-				infoWindow.open(this.map, location.get('marker'));
+    hideLocations: function (locations) {
+      _.each(locations, function (location) {
+        location.get('marker').setVisible(false)
+      })
+    },
 
-				this.closePopupLocation();
-				this.currentInfoWindow = infoWindow;
-			// }
-		},
+    popupLocation: function (location, panTo) {
+      var infoWindow = new google.maps.InfoWindow({
+        content: this.popupTemplate(location.toJSON()),
+      })
 
-		closePopupLocation: function() {
-			if (this.currentInfoWindow) {
-				this.currentInfoWindow.close();
-			}
-		}
+      infoWindow.setOptions({
+        maxHeight: 400,
+      })
 
-	});
+      if (/Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent)) {
+        infoWindow.setOptions({
+          maxWidth: 180,
+          maxHeight: 300,
+        })
+      }
 
-	var mapView = new MapView({
-		el: '#map'
-	});
+      infoWindow.open(this.map, location.get('marker'))
 
+      this.closePopupLocation()
+      this.currentInfoWindow = infoWindow
+      // }
+    },
 
-	var categoriesView = new CategoriesView({
-		el: '#types',
-		map: mapView.getMap()
-	});
+    closePopupLocation: function () {
+      if (this.currentInfoWindow) {
+        this.currentInfoWindow.close()
+      }
+    },
+  })
 
-	locations.fetch().done(function() {
-		mapView.render();
-		categoriesView.render();
+  var mapView = new MapView({
+    el: '#map',
+  })
 
-		categories.chain()
-				  .filter(function(c) { return c.get('enabled'); })
-				  .map(function(c) { return c.get('name'); })
-				  .map(function(name) {
-				  	return locations.where({ type: name })
-				  })
-				  .each(function(locs) {
-				  	Vent.trigger('locations:visible', locs);
-				  })
-				  .value();
-	});
+  var categoriesView = new CategoriesView({
+    el: '#types',
+    map: mapView.getMap(),
+  })
 
-	$('#tour-prev, #tour-next').click(function(e) {
-		e.preventDefault();
-		var navTo = $(this).text();
-		var x = locations.findWhere({ title: navTo });
-		if (x) Vent.trigger('location:clicked', x, true);
-	});
+  locations.fetch().done(function () {
+    mapView.render()
+    categoriesView.render()
 
-});
+    categories
+      .chain()
+      .filter(function (c) {
+        return c.get('enabled')
+      })
+      .map(function (c) {
+        return c.get('name')
+      })
+      .map(function (name) {
+        return locations.where({ type: name })
+      })
+      .each(function (locs) {
+        Vent.trigger('locations:visible', locs)
+      })
+      .value()
+  })
 
-
+  $('#tour-prev, #tour-next').click(function (e) {
+    e.preventDefault()
+    var navTo = $(this).text()
+    var x = locations.findWhere({ title: navTo })
+    if (x) Vent.trigger('location:clicked', x, true)
+  })
+})
 
 function submitATMForm(lat, long) {
-	const type = document.getElementById("type").value;
-	const title = document.getElementById("title").value;
-	const notes = document.getElementById("notes").value;
-	const serverAddress = window.location.origin;
+  const type = document.getElementById('type').value
+  const title = document.getElementById('title').value
+  const notes = document.getElementById('notes').value
+  const serverAddress = window.location.origin
 
-
-	// Realiza una solicitud AJAX (POST) al nuevo servidor Node.js
-	fetch(`${serverAddress}/add_atm`, {
-		method: "POST",
-		body: JSON.stringify({
-			id: generateUniqueId(),  // Debes tener alguna lógica para generar un ID único
-			type: type,
-			timestamp: new Date().toISOString(),
-			title: title,
-			notes: notes,
-			lat: lat,
-			lng: long
-		}),
-		headers: {
-			"Content-Type": "application/json"
-		}
-	})
-	.then(response => response.json())
-	.then(data => {
-		console.log(data.message);
-		location.reload();
-	})
-	.catch(error => {
-		location.reload();
-	});
-} 
-
-function generateUniqueId() {
-	return '_' + Math.random().toString(36).substr(2, 9);
+  // Realiza una solicitud AJAX (POST) al nuevo servidor Node.js
+  fetch(`${serverAddress}/add_atm`, {
+    method: 'POST',
+    body: JSON.stringify({
+      id: generateUniqueId(), // Debes tener alguna lógica para generar un ID único
+      type: type,
+      timestamp: new Date().toISOString(),
+      title: title,
+      notes: notes,
+      lat: lat,
+      lng: long,
+    }),
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data.message)
+      location.reload()
+    })
+    .catch((error) => {
+      location.reload()
+    })
 }
 
+function generateUniqueId() {
+  return '_' + Math.random().toString(36).substr(2, 9)
+}
 
 // Función para eliminar un ATM
 function deleteATM(id) {
-	const serverAddress = window.location.origin;
+  const serverAddress = window.location.origin
 
-	// Realiza una solicitud AJAX (DELETE) al servidor Node.js
-	fetch(`${serverAddress}/delete_atm/${id}`, {
-		method: "DELETE",
-		headers: {
-			"Content-Type": "application/json"
-		}
-	})
-		.then(response => response.json())
-		.then(data => {
-			console.log(data.message);
-			location.reload();
-		})
-		.catch(error => {
-			console.error("Error al eliminar el ATM:", error);
-			location.reload();
-
-		});
+  // Realiza una solicitud AJAX (DELETE) al servidor Node.js
+  fetch(`${serverAddress}/delete_atm/${id}`, {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data.message)
+      location.reload()
+    })
+    .catch((error) => {
+      console.error('Error al eliminar el ATM:', error)
+      location.reload()
+    })
 }
