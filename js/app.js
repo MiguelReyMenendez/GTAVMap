@@ -145,18 +145,6 @@ $(function() {
 	});
 
 	var categories = window.cats = new CategoriesCollection([
-/* 		{
-			name: 'Glitches',
-			icon: 'General/glitches.png',
-			type: 'General',
-			enabled: false
-		},
-		{
-			name: 'Wall breaches',
-			icon: 'General/wall-breach.png',
-			type: 'General',
-			enabled: false
-		}, */
 		{
 			name: 'Spots vehiculos',
 			icon: 'General/cars.png',
@@ -443,23 +431,6 @@ $(function() {
 		},
 
 		popupLocation: function(location, panTo) {
-			// if (window.isTourMode) {
-			// 	$('#tour-info').html(this.popupTemplate(location.toJSON()));
-			// 	var n = locations.at(locations.indexOf(location) + 1);
-			// 	if (n) {
-			// 		$('#tour-next').text(n.get('title'));
-			// 	}
-			// 	var p = locations.at(locations.indexOf(location) - 1);
-			// 	if (p) {
-			// 		$('#tour-prev').text(p.get('title'));
-			// 	}
-
-			// 	if (panTo) {
-			// 		this.map.panTo(location.get('marker').getPosition());
-			// 		this.map.setZoom(5);
-			// 	}
-			// }
-			// else {
 
 				var infoWindow = new google.maps.InfoWindow({
 					content: this.popupTemplate(location.toJSON()),
