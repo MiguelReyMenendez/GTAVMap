@@ -37,7 +37,7 @@ const server = http.createServer((req, res) => {
     });
 });
 
-const port = 3030;
+const port = 8080;
 server.listen(port, () => {
     console.log(`Servidor HTTP para archivos estáticos en http://localhost:${port}`);
 });
