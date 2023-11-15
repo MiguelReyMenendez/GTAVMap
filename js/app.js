@@ -55,7 +55,7 @@ $(function () {
   var currentMarker
 
   var assetsUrl = function () {
-return window.location.hostname == 'localhost' ? 'http://127.0.0.1:3030/' : 'https://gtamap.onrender.com:3030/'
+return window.location.hostname == 'https://gtamapbuild.vercel.app/'
   }
 
   Handlebars.registerHelper('assetsUrl', assetsUrl)
