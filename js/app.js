@@ -55,7 +55,7 @@ $(function () {
   var currentMarker
 
   var assetsUrl = function () {
-    return window.location.hostname == 'localhost' ? 'http://127.0.0.1:5500/gta5-map.github.io/' : 'http://35.181.154.215:3000/'
+    return window.location.hostname == 'localhost' ? 'http://127.0.0.1:5500/gta5-map.github.io/' : 'https://gtamap.onrender.com'
   }
 
   Handlebars.registerHelper('assetsUrl', assetsUrl)
