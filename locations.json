@@ -331,5 +331,95 @@
     "notes": "",
     "lat": 76.91,
     "lng": -121.019
+  },
+  {
+    "id": "_ejf6eclhu",
+    "type": "ATMs",
+    "timestamp": "2023-10-28T00:13:27.519Z",
+    "title": "",
+    "notes": "",
+    "lat": 77.012,
+    "lng": -135.863
+  },
+  {
+    "id": "_b4ng7uf8o",
+    "type": "Spots vehiculos",
+    "timestamp": "2023-10-28T00:14:07.034Z",
+    "title": "",
+    "notes": "",
+    "lat": 80.056,
+    "lng": -146.84
+  },
+  {
+    "id": "_3mbs3w0fr",
+    "type": "ATMs",
+    "timestamp": "2023-10-28T00:14:18.715Z",
+    "title": "",
+    "notes": "",
+    "lat": 70.938,
+    "lng": -99.595
+  },
+  {
+    "id": "_ot0uvab7c",
+    "type": "ATMs",
+    "timestamp": "2023-10-28T00:14:28.212Z",
+    "title": "",
+    "notes": "",
+    "lat": 70.843,
+    "lng": -99.576
+  },
+  {
+    "id": "_zu5ytclmh",
+    "type": "ATMs",
+    "timestamp": "2023-10-28T00:14:58.095Z",
+    "title": "",
+    "notes": "",
+    "lat": 76.791,
+    "lng": -99.702
+  },
+  {
+    "id": "_fm0h74633",
+    "type": "ATMs",
+    "timestamp": "2023-10-28T00:15:34.850Z",
+    "title": "",
+    "notes": "",
+    "lat": 80.867,
+    "lng": -108.078
+  },
+  {
+    "id": "_1x78t2x0q",
+    "type": "ATMs",
+    "timestamp": "2023-11-01T19:18:11.679Z",
+    "title": "ATM Doble",
+    "notes": "",
+    "lat": 66.657,
+    "lng": -137.469
+  },
+  {
+    "id": "_ipiukoifw",
+    "type": "Spots vehiculos",
+    "timestamp": "2023-11-03T17:27:55.786Z",
+    "title": "Haku + Deportivo",
+    "notes": "estacionamiento subterraneo",
+    "lat": 67.528,
+    "lng": -131.295
+  },
+  {
+    "id": "_tb5n17jpo",
+    "type": "Otros",
+    "timestamp": "2023-11-03T23:28:31.247Z",
+    "title": "Lanchas",
+    "notes": "varias lanchas alrededor de la costa",
+    "lat": 79.487,
+    "lng": -110.583
+  },
+  {
+    "id": "_kqe69lfmh",
+    "type": "Otros",
+    "timestamp": "2023-11-03T23:29:11.413Z",
+    "title": "Lanchas",
+    "notes": "varias lanchas en la costa",
+    "lat": 78.946,
+    "lng": -119.6
   }
 ]
