@@ -12,11 +12,16 @@
 	<script src="js/libs/backbone-min.js"></script>
 	<script src="js/libs/handlebars.js"></script>
 	<script src="//www.google.com/jsapi"></script>
-	<script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
-	<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBJe9hz7kvY-cCojCyZNpJvEMuKPgKOg6g&libraries=drawing"></script>
+<!-- 	<script src="//maps.googleapis.com/maps/api/js?v=3.exp&sensor=false&callback=initMap" async defer></script>
+ -->	<script src="//maps.googleapis.com/maps/api/js?key=AIzaSyBJe9hz7kvY-cCojCyZNpJvEMuKPgKOg6g&libraries=drawing"></script>
 	<script src="js/app.js"></script>
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<script>
+		function initMap() {
+console.log('map')
+		}
+	  </script>
 </head>
 <body class="">
 

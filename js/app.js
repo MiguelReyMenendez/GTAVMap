@@ -55,7 +55,7 @@ $(function () {
   var currentMarker
 
   var assetsUrl = function () {
-    return window.location.hostname == 'localhost' ? 'http://127.0.0.1:5500/gta5-map.github.io/' : 'http://35.181.154.215:3000/'
+    return 'http://localhost:3000/'
   }
 
   Handlebars.registerHelper('assetsUrl', assetsUrl)
@@ -331,11 +331,18 @@ $(function () {
 
       google.maps.event.addListener(map, 'maptypeid_changed', this.updateMapBackground)
 
-      google.maps.event.addDomListener(map, 'tilesloaded', function () {
+    /*   google.maps.event.addDomListener(map, 'tilesloaded', function () {
+        if ($('#mapControlWrap').length == 0) {
+          $('div.gmnoprint').last().wrap('<div id="mapControlWrap" />')
+        }
+      }) */
+
+      google.maps.event.addListener(map, 'tilesloaded', function () {
         if ($('#mapControlWrap').length == 0) {
           $('div.gmnoprint').last().wrap('<div id="mapControlWrap" />')
         }
       })
+      
 
       window.locs = []
       google.maps.event.addListener(map, 'rightclick', function (e) {
@@ -598,4 +605,3 @@ function deleteATM(id) {
   
 
   
-
