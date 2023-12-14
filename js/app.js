@@ -9,9 +9,9 @@ const lngInput = document.getElementById('lng')
 $(function () {
   var showCoordinations = true
 
-  if (window.location.protocol != 'http:') {
+/*   if (window.location.protocol != 'http:') {
     window.location.href = 'http:' + window.location.href.substring(window.location.protocol.length)
-  }
+  } */
 
   var $types = $('.types')
 
@@ -539,10 +539,10 @@ function submitATMForm(lat, long) {
     .then((response) => response.json())
     .then((data) => {
       console.log(data.message)
-      location.reload()
+      //location.reload()
     })
     .catch((error) => {
-      location.reload()
+      //location.reload()
     })
 }
 

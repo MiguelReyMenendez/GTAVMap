@@ -4,7 +4,7 @@ const cors = require('cors');
 const fs = require('fs');
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = 8080;
 
 // Configura middleware para analizar solicitudes JSON
 app.use(bodyParser.json());

@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 /* @import 'tailwindcss/base';
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities'; */
+=======
+/*@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';*/
+>>>>>>> 5e7ba40137532a55949f6bb502e7100fec6e24d9
 
 * { margin: 0; padding: 0; border: none; }
 body { font-family: Roboto, sans-serif; color: #333; }
